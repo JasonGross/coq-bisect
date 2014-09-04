@@ -43,18 +43,19 @@ then
     git remote update
     if [ -z "$BAD" ]
     then
-	echo "ERROR: You must set the BAD environment variable, or have a BAD= line in ./environ."
-	echo "       The BAD variable is used to name the first bad commit"
-	exit 1
-    fi
-    if [ -z "$GOOD" ]
+	echo "WARNING: You can set the BAD environment variable, or have a BAD= line in ./environ."
+	echo "         The BAD variable is used to name the first bad commit"
+	BADGOOD=""
+    elif [ -z "$GOOD" ]
     then
-	echo "ERROR: You must set the BAD environment variable, or have a GOOD= line in ./environ."
-	echo "       The BAD variable is used to name the first bad commit"
-	exit 1
+	echo "WARNING: You can set the GOOD environment variable, or have a GOOD= line in ./environ."
+	echo "         The GOOD variable is used to name the first bad commit"
+	BADGOOD="$BAD"
+    else
+	BADGOOD="$BAD $GOOD"
     fi
     # git bisect start [--no-checkout] [<bad> [<good>...]] [--] [<paths>...]
-    git bisect start "$BAD" "$GOOD"
+    git bisect start $BADGOOD
     git bisect run "$SCRIPT" "$@"
     exit 128 # if git bisect run gets --init, abort immediately
 fi
