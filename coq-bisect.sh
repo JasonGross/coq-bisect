@@ -41,6 +41,8 @@ then
     PS4='$ '
     set -x
     git remote update
+    git clean -xfd
+    git checkout origin/trunk
     if [ -z "$BAD" ]
     then
 	echo "WARNING: You can set the BAD environment variable, or have a BAD= line in ./environ."
