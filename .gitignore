@@ -1,3 +1,6 @@
 *.vo
 *.glob
 *.v.d
+/environ
+/example.v
+/.coq-native
