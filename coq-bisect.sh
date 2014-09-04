@@ -7,6 +7,8 @@ COQ_DIR="$MYDIR/coq"
 # exit immediately and abort the bisect if killed
 trap "exit 128" SIGHUP SIGINT SIGTERM
 
+cd "$MYDIR"
+
 if [ -f "$MYDIR/environ" ]
 then
     chmod +x "$MYDIR/environ"
@@ -23,9 +25,9 @@ fi
 if [ ! -f "$FILE" ]
 then
     echo "ERROR: You must set the FILE environment variable, have an FILE= line in ./environ,"
-    echo "       or have an example.v file, and the value of \$FILE must be an existing file."
+    echo "       or have an example.v file, and the value of \$FILE ($FILE) must be an existing file."
     echo "       This file is used as the test file."
-    exit 1
+    exit 128
 fi
 
 if [ -z "$ERR_MESSAGE" ]
