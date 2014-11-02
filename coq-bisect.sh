@@ -53,7 +53,7 @@ then
     elif [ -z "$GOOD" ]
     then
 	echo "WARNING: You can set the GOOD environment variable, or have a GOOD= line in ./environ."
-	echo "         The GOOD variable is used to name the first bad commit"
+	echo "         The GOOD variable is used to name the first good commit"
 	BADGOOD="$BAD"
     else
 	BADGOOD="$BAD $GOOD"
@@ -109,8 +109,8 @@ fi
 
 rm -f "${FILE%.v}.vo"
 OUTPUT="$(timeout "$TIMEOUT" ./bin/coqtop $COQTOP_ARGS -compile "${FILE%.v}" 2>&1)"
-ls *"${FILE%.v}"*
 ERR=$?
+ls "${FILE%.v}"*
 echo "$OUTPUT"
 echo "$ERR"
 #echo "$FILE"
