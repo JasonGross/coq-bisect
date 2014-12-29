@@ -43,7 +43,7 @@ then
     PS4='$ '
     set -x
     git remote update
-    git clean -xfd
+    git clean -xfd >/dev/null
     git checkout origin/trunk
     if [ -z "$BAD" ]
     then
@@ -86,7 +86,7 @@ done
 if [ "$1" == "--no-build" ]; then
     shift
 else
-    git clean -xfd 2>&1 >/dev/null
+    git clean -xfd >/dev/null
     echo "./configure $ARGS"
     ./configure $ARGS
     if [ -z "$MAKE_TARGET" ]; then
