@@ -60,7 +60,7 @@ then
     fi
     # git bisect start [--no-checkout] [<bad> [<good>...]] [--] [<paths>...]
     git bisect start $BADGOOD
-    git bisect run "$SCRIPT" "$@"
+    git bisect run "$SCRIPT" "$@" | tee coq-bisect.log
     exit 128 # if git bisect run gets --init, abort immediately
 fi
 
