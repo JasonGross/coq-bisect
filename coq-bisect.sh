@@ -44,6 +44,7 @@ then
     set -x
     git remote update
     git clean -xfd >/dev/null
+    git reset --hard >/dev/null
     git checkout origin/trunk
     if [ -z "$BAD" ]
     then
