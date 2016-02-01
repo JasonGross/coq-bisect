@@ -1,8 +1,10 @@
-*.vo
-*.glob
-*.v.d
+*~
 .*.aux
+/coq-bisect.log
+/.coq-native
 /environ
 /example.v
-/.coq-native
-/coq-bisect.log
+*.glob
+/*.v
+*.v.d
+*.vo
