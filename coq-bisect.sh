@@ -114,6 +114,8 @@ if [ -z "$TIMEOUT" ]; then
 fi
 
 rm -f "${FILE%.v}.vo"
+
+echo "$ timeout \"$TIMEOUT\" ./bin/coqtop $COQTOP_ARGS -compile \"${FILE%.v}\" 2>&1"
 OUTPUT="$(timeout "$TIMEOUT" ./bin/coqtop $COQTOP_ARGS -compile "${FILE%.v}" 2>&1)"
 ERR=$?
 ls "${FILE%.v}"*
