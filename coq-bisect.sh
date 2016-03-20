@@ -7,6 +7,10 @@ COQ_DIR="$MYDIR/coq"
 # exit immediately and abort the bisect if killed
 trap "exit 128" SIGHUP SIGINT SIGTERM
 
+function do_sleep() {
+#    sleep 1
+}
+
 cd "$MYDIR"
 
 if [ -f "$MYDIR/environ" ]
@@ -121,20 +125,25 @@ rm -f "${FILE%.v}.vo" "${FILE%.v}.glob" "N${FILE%.v}.o" "N${FILE%.v}.native" "N$
 if [ ! -z "$(echo "$OUTPUT" | grep -o "$ERR_MESSAGE")" ]; then
     if [ -z "$SWAP" ]; then
 	echo 'exit 1'
+	do_sleep
 	exit 1 # bad
     else
 	echo 'exit 0'
+	do_sleep
 	exit 0 # bad, but we tell git bisect it's good because we're swapped
     fi
 elif [ $ERR = 0 ]; then
     if [ -z "$SWAP" ]; then
 	echo 'exit 0'
+	do_sleep
 	exit 0 # good
     else
 	echo 'exit 1'
+	do_sleep
 	exit 1 # good, but we tell git bisect it's bad, because we're swapped
     fi
 else
     echo 'exit 125'
+    do_sleep
     exit 125 # failed for other reason
 fi
