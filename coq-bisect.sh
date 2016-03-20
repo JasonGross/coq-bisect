@@ -7,8 +7,9 @@ COQ_DIR="$MYDIR/coq"
 # exit immediately and abort the bisect if killed
 trap "exit 128" SIGHUP SIGINT SIGTERM
 
-function do_sleep() {
+function do_sleep {
 #    sleep 1
+    true
 }
 
 cd "$MYDIR"
