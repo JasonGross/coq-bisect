@@ -67,6 +67,7 @@ then
     # git bisect start [--no-checkout] [<bad> [<good>...]] [--] [<paths>...]
     git bisect start $BADGOOD
     git bisect run "$SCRIPT" "$@" 2>&1 | tee coq-bisect.log
+    git reset --hard
     exit 128 # if git bisect run gets --init, abort immediately
 fi
 
@@ -84,11 +85,21 @@ for arg in $CONFIGURE_ARGS; do
 	ARGS="$ARGS $arg"
     fi
 done
+for arg in "-nodoc"; do
+    if [ ! -z "$(./configure -h 2>&1 | grep -- "$arg")" ]; then
+	ARGS="$ARGS $arg"
+    fi
+done
 for arg in "-coqide" "-with-doc"; do
     if [ ! -z "$(./configure -h 2>&1 | grep -- "$arg")" ]; then
 	ARGS="$ARGS $arg no"
     fi
 done
+if [ ! -z "$(./configure -h 2>&1 | grep -- -camlp5dir)" ]; then
+    if which ocamlfind 2>&1 >/dev/null; then
+        ARGS="$ARGS -camlp5dir $(ocamlfind query camlp5 | sed s'/ /\\ /g')"
+    fi
+fi
 if [ "$1" == "--no-build" ]; then
     shift
 else
@@ -103,7 +114,8 @@ else
 	MAKE_TARGET=coqlight
 	echo "Defaulting MAKE_TARGET to $MAKE_TARGET"
     fi
-    make $MAKE_TARGET "$@" || exit 125
+    make $MAKE_TARGET "$@" || (git reset --hard; exit 125)
+    git reset --hard
 fi
 ls ./bin
 
