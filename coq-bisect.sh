@@ -8,7 +8,7 @@ COQ_DIR="$MYDIR/coq"
 trap "exit 128" SIGHUP SIGINT SIGTERM
 
 function do_sleep {
-#    sleep 1
+    sleep 1
     true
 }
 
@@ -93,6 +93,10 @@ if [ "$1" == "--no-build" ]; then
     shift
 else
     git clean -xfd >/dev/null
+    echo "Removing make check from configure"
+    if [ "$(grep -c '"$MAKEVERSIONMAJOR" -eq 3 -a "$MAKEVERSIONMINOR" -ge 81' configure 2>/dev/null)" -eq 1 ]; then
+	sed s'/".MAKEVERSIONMAJOR" -eq 3 -a ".MAKEVERSIONMINOR" -ge 81/true/g' -i configure
+    fi
     echo "./configure $ARGS"
     ./configure $ARGS
     if [ -z "$MAKE_TARGET" ]; then
