@@ -131,8 +131,15 @@ fi
 
 rm -f "${FILE%.v}.vo"
 
-echo "$ timeout \"$TIMEOUT\" ./bin/coqtop $COQTOP_ARGS -compile \"${FILE%.v}\" 2>&1"
-OUTPUT="$(timeout "$TIMEOUT" ./bin/coqtop $COQTOP_ARGS -compile "${FILE%.v}" 2>&1)"
+COQTOP="./bin/coqtop"
+if [ ! -f "$COQTOP" ]; then
+    if [ -f "./bin/coqtop.opt" ]; then
+	COQTOP="./bin/coqtop.opt"
+    fi
+fi
+
+echo "$ timeout \"$TIMEOUT\" $COQTOP $COQTOP_ARGS -compile \"${FILE%.v}\" 2>&1"
+OUTPUT="$(timeout "$TIMEOUT" $COQTOP $COQTOP_ARGS -compile "${FILE%.v}" 2>&1)"
 ERR=$?
 ls "${FILE%.v}"*
 echo "$OUTPUT"
