@@ -114,6 +114,10 @@ else
 	MAKE_TARGET=coqlight
 	echo "Defaulting MAKE_TARGET to $MAKE_TARGET"
     fi
+    echo "Fixing unterminated string literal"
+    if [ ! -z "$(git grep --name-only '{w|' "*.ml")" ]; then
+        git grep --name-only '{w|' "*.ml" | xargs sed s'/{w|/{ w |/g' -i
+    fi
     make $MAKE_TARGET "$@" || (git reset --hard; exit 125)
     git reset --hard
 fi
