@@ -147,8 +147,8 @@ if [ -z "$EMACS" ]; then
     OUTPUT="$(timeout "$TIMEOUT" $COQTOP $COQTOP_ARGS -compile "${FILE%.v}" 2>&1)"
     ERR=$?
 else
-    echo "$ cat \"${FILE%.v}\" | timeout \"$TIMEOUT\" $COQTOP $COQTOP_ARGS -emacs 2>&1"
-    OUTPUT="$(cat "${FILE%.v}" | timeout "$TIMEOUT" $COQTOP $COQTOP_ARGS -emacs 2>&1)"
+    echo "$ cat \"${FILE}\" | timeout \"$TIMEOUT\" $COQTOP $COQTOP_ARGS -emacs 2>&1"
+    OUTPUT="$(cat "${FILE}" | timeout "$TIMEOUT" $COQTOP $COQTOP_ARGS -emacs 2>&1)"
     ERR=$?
 fi
 ls "${FILE%.v}"*
