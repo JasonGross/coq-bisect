@@ -142,9 +142,15 @@ if [ ! -f "$COQTOP" ]; then
     fi
 fi
 
-echo "$ timeout \"$TIMEOUT\" $COQTOP $COQTOP_ARGS -compile \"${FILE%.v}\" 2>&1"
-OUTPUT="$(timeout "$TIMEOUT" $COQTOP $COQTOP_ARGS -compile "${FILE%.v}" 2>&1)"
-ERR=$?
+if [ -z "$EMACS" ]; then
+    echo "$ timeout \"$TIMEOUT\" $COQTOP $COQTOP_ARGS -compile \"${FILE%.v}\" 2>&1"
+    OUTPUT="$(timeout "$TIMEOUT" $COQTOP $COQTOP_ARGS -compile "${FILE%.v}" 2>&1)"
+    ERR=$?
+else
+    echo "$ cat \"${FILE%.v}\" | timeout \"$TIMEOUT\" $COQTOP $COQTOP_ARGS -emacs 2>&1"
+    OUTPUT="$(cat "${FILE%.v}" | timeout "$TIMEOUT" $COQTOP $COQTOP_ARGS -emacs 2>&1)"
+    ERR=$?
+fi
 ls "${FILE%.v}"*
 echo "$OUTPUT"
 echo "$ERR"
