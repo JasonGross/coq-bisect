@@ -125,8 +125,13 @@ else
 fi
 ls ./bin
 
+if [ -z "$COQC_ARGS" ]; then
+    COQC_ARGS="-nois -boot"
+    echo "Defaulting COQC_ARGS to $COQC_ARGS"
+fi
+
 if [ -z "$COQTOP_ARGS" ]; then
-    COQTOP_ARGS="-nois -boot"
+    COQTOP_ARGS="${COQC_ARGS}"
     echo "Defaulting COQTOP_ARGS to $COQTOP_ARGS"
 fi
 
@@ -137,6 +142,13 @@ fi
 
 rm -f "${FILE%.v}.vo"
 
+COQC="./bin/coqc"
+if [ ! -f "$COQC" ]; then
+    if [ -f "./bin/coqc.opt" ]; then
+	COQC="./bin/coqc.opt"
+    fi
+fi
+
 COQTOP="./bin/coqtop"
 if [ ! -f "$COQTOP" ]; then
     if [ -f "./bin/coqtop.opt" ]; then
@@ -145,11 +157,11 @@ if [ ! -f "$COQTOP" ]; then
 fi
 
 if [ -z "$EMACS" ]; then
-    echo "$ timeout \"$TIMEOUT\" $COQTOP $COQTOP_ARGS -compile \"${FILE%.v}\" 2>&1"
-    OUTPUT="$(timeout "$TIMEOUT" $COQTOP $COQTOP_ARGS -compile "${FILE%.v}" 2>&1)"
+    echo "$ timeout \"$TIMEOUT\" $COQC $COQC_ARGS \"${FILE%.v}\" 2>&1"
+    OUTPUT="$(timeout "$TIMEOUT" $COQC $COQC_ARGS "${FILE%.v}" 2>&1)"
     ERR=$?
 else
-    echo "$ cat \"${FILE}\" | timeout \"$TIMEOUT\" $COQTOP $COQTOP_ARGS -emacs 2>&1"
+    echo "$ cat \"${FILE}\" | timeout \"$TIMEOUT\" $COQC $COQC_ARGS -emacs 2>&1"
     OUTPUT="$(cat "${FILE}" | timeout "$TIMEOUT" $COQTOP $COQTOP_ARGS -emacs 2>&1)"
     ERR=$?
 fi
