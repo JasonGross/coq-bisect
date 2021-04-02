@@ -48,4 +48,4 @@ jobs:
     - name: submodules-init
       uses: snickerbockers/submodules-init@v4
     - run: ./make-environ.sh
-    - run: ./coq-bisect.sh
+    - run: ./coq-bisect.sh --init
