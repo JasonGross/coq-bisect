@@ -96,8 +96,10 @@ for arg in "-coqide" "-with-doc"; do
     fi
 done
 if [ ! -z "$(./configure -h 2>&1 | grep -- -camlp5dir)" ]; then
-    if which ocamlfind 2>&1 >/dev/null; then
-        ARGS="$ARGS -camlp5dir $(ocamlfind query camlp5 | sed s'/ /\\ /g')"
+    if which ocamlfind >/dev/null 2>&1; then
+        if ocamlfind query camlp5 >/dev/null 2>&1; then
+            ARGS="$ARGS -camlp5dir $(ocamlfind query camlp5 | sed s'/ /\\ /g')"
+        fi
     fi
 fi
 if [ "$1" == "--no-build" ]; then
