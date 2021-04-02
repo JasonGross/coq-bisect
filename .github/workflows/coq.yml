@@ -14,7 +14,7 @@ jobs:
       run: |
         sudo add-apt-repository "ppa:jgross-h/many-coq-versions-ocaml-4-05" -y
         sudo apt-get -o Acquire::Retries=30 update -q
-        sudo apt-get -o Acquire::Retries=30 install ocaml-findlib coq-8.13.1 libcoq-8.13.1-ocaml-dev -y --allow-unauthenticated
+        sudo apt-get -o Acquire::Retries=30 install ocaml-findlib ocaml-zarith coq-8.13.1 libcoq-8.13.1-ocaml-dev -y --allow-unauthenticated
     - name: echo build params
       run: |
         echo "::group::lscpu"
