@@ -3,7 +3,7 @@
 /coq-bisect.log
 /.coq-native
 /environ
-/example.v
+#/example.v
 *.glob
 /*.v
 *.v.d

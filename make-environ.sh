@@ -3,11 +3,11 @@
 cat > environ <<EOF
 export FILE=example.v
 export ERR_MESSAGE=Error
-export BAD=trunk
-export GOOD=v8.4
+export BAD=V8.12.0
+export GOOD=V8.11.2
 export CONFIGURE_ARGS="-nodoc -coqide no"
-export MAKE_TARGET=coqlight
-export COQTOP_ARGS="-nois -boot"
+export MAKE_TARGET="coqocaml theories/Init/Prelude.vo"
+export COQTOP_ARGS=""
 export SWAP=
 EOF
 

@@ -1,0 +1,51 @@
+name: CI (Coq)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: install Coq
+      run: |
+        sudo add-apt-repository "ppa:jgross-h/many-coq-versions-ocaml-4-05" -y
+        sudo apt-get -o Acquire::Retries=30 update -q
+        sudo apt-get -o Acquire::Retries=30 install ocaml-findlib coq-8.13.1 libcoq-8.13.1-ocaml-dev -y --allow-unauthenticated
+    - name: echo build params
+      run: |
+        echo "::group::lscpu"
+        lscpu
+        echo "::endgroup::"
+        echo "::group::uname -a"
+        uname -a
+        echo "::endgroup::"
+        echo "::group::lsb_release -a"
+        lsb_release -a
+        echo "::endgroup::"
+        echo "::group::ghc --version"
+        ghc --version
+        echo "::endgroup::"
+        echo "::group::gcc -v"
+        gcc -v
+        echo "::endgroup::"
+        echo "::group::ocamlc -config"
+        ocamlc -config
+        echo "::endgroup::"
+        echo "::group::coqc --config"
+        coqc --config
+        echo "::endgroup::"
+        echo "::group::coqc --version"
+        coqc --version
+        echo "::endgroup::"
+        echo "::group::echo | coqtop"
+        echo | coqtop
+        echo "::endgroup::"
+    - uses: actions/checkout@v2
+    - name: submodules-init
+      uses: snickerbockers/submodules-init@v4
+    - run: ./make-environ.sh
+    - run: ./coq-bisect.sh
